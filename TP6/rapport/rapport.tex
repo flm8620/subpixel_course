@@ -1,0 +1,63 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsbsy}
+\usepackage{mathrsfs}
+\usepackage{appendix}
+\usepackage{amsthm}
+\usepackage{bbold}
+\usepackage{epstopdf}
+\usepackage{stmaryrd}
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bb}[1]{\mathbf{#1}}
+\newcommand{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\newcommand{\parti}[1]{\pd{}{#1}}
+\newcommand{\bigCI}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\title{TP6 for Sub-pixel}
+\author{Leman FENG\\ Email: flm8620@gmail.com\\Website: lemanfeng.com}
+
+\begin{document}
+	\maketitle
+	\section*{Ex 15}
+	\subsection*{1}
+	Notice that $\frac{d x_+^{n+1}}{d x} = (n+1)x_+^{n}, x\neq 0$. So inversely,
+	$$
+	\int_a^b x_+^n = \frac{1}{n+1} [x^{n+1}_+]_a^b
+	$$
+	\subsection*{2}
+	It's easy to verify this is true for $n=1$.
+	Assume it's true for $n$.
+	\begin{equation*}
+	\begin{split}
+	\beta^{n+1}(y) &= \beta^n \star \beta^0 = \frac{1}{n!}\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k \int (x-k+\frac{n+1}{2})_+^n \cdot \mathbb{1}_{[-1/2,1/2[}(y-x) dx\\
+	&=\frac{1}{n!}\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k \int_{y-1/2}^{y+1/2} (x-k+\frac{n+1}{2})_+^n dx\\
+	&=\frac{1}{n!}\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k \frac{1}{n+1} \int_{y-k+n/2}^{y-k+n/2+1} x_+^{n+1} dx\\
+	&=\frac{1}{(n+1)!}\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k [x_+^{n+1}]_{y-k+n/2}^{y-k+n/2+1}\\
+	&=\frac{1}{(n+1)!}\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k ((y-k+n/2+1)_+^{n+1} - (y-k+n/2)_+^{n+1})\\
+	&=\frac{1}{(n+1)!}(\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k (y-k+(n+2)/2)_+^{n+1} +  \sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^{k+1} (y-(k+1)+(n+2)/2)_+^{n+1})\\
+	&=\frac{1}{(n+1)!}(\sum_{k=0}^{n+1} \binom{n+1}{k} (-1)^k (y-k+(n+2)/2)_+^{n+1} +  \sum_{k=1}^{n+2} \binom{n+1}{k-1} (-1)^{k} (y-k+(n+2)/2)_+^{n+1})\\
+	\end{split}
+	\end{equation*}
+	
+	We know that
+	\begin{equation*}
+	\begin{cases}
+	\binom{n+2}{k} = \binom{n+1}{k} + \binom{n+1}{k-1} & 1\leq k \leq n+1\\
+	\binom{n+2}{k} = \binom{n+1}{k-1} & \leq k = n+2\\
+	\binom{n+2}{k} = \binom{n+1}{k} & \leq k = 0
+	\end{cases}
+	\end{equation*}
+	
+	So we have
+	\begin{equation*}
+	\begin{split}
+	\beta^{n+1}(y)
+	&=\frac{1}{(n+1)!}\sum_{k=0}^{n+2} \binom{n+2}{k} (-1)^k (y-k+(n+2)/2)_+^{n+1}\\
+	\end{split}
+	\end{equation*}
+	so this is also true for $n+1$.
+	By recurrence, this is true for all $n\geq 1$
+\end{document}
