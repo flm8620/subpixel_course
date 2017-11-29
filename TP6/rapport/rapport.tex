@@ -60,4 +60,109 @@
 	\end{equation*}
 	so this is also true for $n+1$.
 	By recurrence, this is true for all $n\geq 1$
+	\subsection*{3}
+	\begin{equation*}
+	\begin{split}
+	\forall p\in \mathbb{Z},\ \hat{u}[p]&=\sum_{l=0}^{N-1} u[l] e^{-i\frac{2\pi l}{N}p}\\
+	&=\sum_{l=0}^{N-1} e^{-i\frac{2\pi l}{N}p} \sum_{k\in\mathbb{Z}} v[k]w[l-k] \\
+	&=\sum_{l=0}^{N-1} e^{-i\frac{2\pi l}{N}p} \sum_{k\in\mathbb{Z}} v[l-k]w[k] \\
+	&=\sum_{k\in\mathbb{Z}} w[k]  e^{-i\frac{2\pi k}{N}p} \sum_{l=0}^{N-1}  v[l-k] e^{-i\frac{2\pi (l-k)}{N}p}  \\
+	&=\sum_{k\in\mathbb{Z}} w[k]  e^{-i\frac{2\pi k}{N}p} \sum_{l=0}^{N-1}  v[(l-k)\mod N] e^{-i\frac{2\pi (l-k)\mod N}{N}p}  \\
+	&=\sum_{k\in\mathbb{Z}} w[k]  e^{-i\frac{2\pi k}{N}p} \hat{v}[p]\\
+	&=\hat{w}(\frac{2\pi k}{N})\hat{v}[p]\\
+	\end{split}
+	\end{equation*}
+	
+	\subsection*{4}
+	Assume there exist a $c$ such that $U(x)$ interpolate exactly $u$
+	
+	\begin{equation*}
+		\begin{split}
+		\forall l\in \mathbb{Z},\ u[l]&=U(l)
+		= \sum_{k\in\mathbb{Z}} c[k] \beta^n(l-k) = \sum_{k\in\mathbb{Z}} c[k] \beta^n_d[l-k]\\
+		\end{split}
+	\end{equation*}
+	use the result from 3:
+	\begin{equation*}
+	\begin{split}
+	\forall p\in \mathbb{Z},\ \hat{u}[p]&= \hat{c}[p] \hat{\beta^n_d}(\frac{2\pi p}{N})\\
+	\hat{c}[p] &= \frac{\hat{u}[p]}{\hat{\beta^n_d}(\frac{2\pi p}{N})}
+	\end{split}
+	\end{equation*}
+	where $\hat{\beta^n_d}$ is the $2\pi$-periodic of $\hat{\beta^n}$.
+	
+	
+	So we proved that there is one way to construct such $c$, and for all $c$ that satisfy this property, its fourier transform must be in the above form, so $c$ exist and is unique.
+	
+	\subsection*{5}
+	\begin{equation*}
+	\begin{split}
+	\forall 0\leq l\leq 2N-1,\ u_2[l]&=U(l/2)
+	= \sum_{k\in\mathbb{Z}} c[k] \beta^n(l/2-k)\\
+	\end{split}
+	\end{equation*}
+	
+	\begin{equation*}
+	\begin{split}
+	\forall 0\leq p\leq 2N-1,\ \hat{u_2}[p]&=\sum_{l=0}^{2N-1} u_2[l] e^{-i\frac{2\pi l}{2N}p}\\
+	&=\sum_{l=0}^{2N-1} \sum_{k\in\mathbb{Z}} c[k] \beta^n(l/2-k) e^{-i\frac{2\pi l}{2N}p}\\
+	&=\sum_{a=0}^{N-1} \sum_{k\in\mathbb{Z}} c[k] \beta^n(a-k) e^{-i\frac{2\pi a}{N}p}
+	+ \sum_{b=0}^{N-1} \sum_{k\in\mathbb{Z}} c[k] \beta^n(b-k+1/2) e^{-i\frac{2\pi b}{N}p} e^{-i\frac{\pi}{N}p}\\
+	\end{split}
+	\end{equation*}
+	
+	According to question 4, first term is simplified:
+	\begin{equation*}
+	\begin{split}
+	\forall 0\leq p\leq 2N-1,\ \hat{u_2}[p]&=\hat{u}[p]
+	+ \sum_{b=0}^{N-1} \sum_{k\in\mathbb{Z}} c[k] \beta^n(b-k+1/2) e^{-i\frac{2\pi b}{N}p} e^{-i\frac{\pi}{N}p}\\
+	\end{split}
+	\end{equation*}
+	Note $\beta^n_T (x) = \beta^n(x-T)$
+	
+	\begin{equation*}
+	\begin{split}
+	\forall 0\leq p\leq 2N-1,\ \hat{u_2}[p]&=\hat{u}[p]
+	+ e^{-i\frac{\pi}{N}p} \sum_{b=0}^{N-1} e^{-i\frac{2\pi b}{N}p}\sum_{k\in\mathbb{Z}} c[k]  \beta^n_{-\frac{1}{2}}(b-k)  \\
+	&=\hat{u}[p]
+	+ e^{-i\frac{\pi}{N}p} \sum_{b=0}^{N-1} e^{-i\frac{2\pi b}{N}p}\sum_{k\in\mathbb{Z}} c[b-k]  \beta^n_{-\frac{1}{2}}(k)  \\
+	&=\hat{u}[p] + e^{-i\frac{\pi}{N}p} \sum_{k\in\mathbb{Z}} \beta^n_{-\frac{1}{2}}(k) e^{-i\frac{2\pi k}{N}p} \sum_{b=0}^{N-1} c[b-k] e^{-i\frac{2\pi (b-k)}{N}p}    \\
+	&=\hat{u}[p] + e^{-i\frac{\pi}{N}p} \widehat{{\beta^n_{-\frac{1}{2}}}_d}(\frac{2\pi p}{N}) \hat{c}[p]  \\
+	\end{split}
+	\end{equation*}
+	
+	By properties of Fourier transform, we have $\hat{\beta^n_T}(\xi) =-\hat{\beta^n}(\xi)e^{i\xi T}$.
+	
+	$\widehat{{\beta^n_T}_d}$ is $2\pi$-periodic of $\hat{\beta^n_T}(\xi)$
+	\begin{equation*}
+	\begin{split}
+	\widehat{{\beta^n_{-\frac{1}{2}}}_d}(\xi) &=\sum_{a\in\mathbb{Z}} \hat{\beta^n_{-\frac{1}{2}}}(\xi+2\pi a) = e^{i\xi \frac{1}{2}} \sum_{a\in\mathbb{Z}}  \hat{\beta^n}(\xi+2\pi a)  e^{i \pi a}= e^{i\xi \frac{1}{2}} \sum_{a\in\mathbb{Z}}  \hat{\beta^n}(\xi+2\pi a)  (-1)^a\\
+	&=e^{i\xi \frac{1}{2}} (\sum_{a\in\mathbb{Z}}  \hat{\beta^n}(\xi+2\pi a) - 2 \sum_{b\in\mathbb{Z}}  \hat{\beta^n}(\xi+4\pi b+2\pi))\\
+	&=e^{i\xi \frac{1}{2}} (\hat{\beta^n_d}(\xi) - 2 \hat{\beta^n_{\frac{d}{2}}}(\xi + 2\pi))\\
+	\end{split}
+	\end{equation*}
+	where $\hat{\beta^n_{\frac{d}{2}}}$ is $4\pi$-periodic of $\hat{\beta^n}$.
+	
+	So
+	\begin{equation*}
+	\begin{split}
+	\widehat{{\beta^n_{-\frac{1}{2}}}_d}(\frac{2\pi p}{N}) &=e^{i\frac{\pi p}{N}} (\hat{\beta^n_d}(\frac{2\pi p}{N}) - 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))\\
+	\end{split}
+	\end{equation*}
+	
+	Then
+	\begin{equation*}
+	\begin{split}
+	\forall 0\leq p\leq 2N-1,\ \hat{u_2}[p]&=\hat{u}[p] + \hat{c}[p] (\hat{\beta^n_d}(\frac{2\pi p}{N}) - 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))  \\
+	&=\hat{u}[p] + \frac{\hat{u}[p]}{\hat{\beta^n_d}(\frac{2\pi p}{N})}  (\hat{\beta^n_d}(\frac{2\pi p}{N}) - 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))  \\
+	&= \hat{u}[p] (2- 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))
+	\end{split}
+	\end{equation*}
+	
+	We know that $\hat{\beta^n}(\xi) = (\frac{\sin (\xi/2)}{\xi/2})^{n+1}$
+	Then
+	
+	\begin{equation*}
+	\hat{\beta^n_{\frac{d}{2}}}(\xi) = \sum_{b\in\mathbb{Z}}  \hat{\beta^n}(\xi+4\pi b+2\pi) = \sum_{b\in\mathbb{Z}}  (\frac{\sin (\xi/2 +2\pi b +\pi)}{\xi/2 +2\pi b +\pi})^{n+1}= \sum_{b\in\mathbb{Z}}  (\frac{-\sin (\xi/2)}{\xi/2 +2\pi b +\pi})^{n+1}
+	\end{equation*}
 \end{document}
