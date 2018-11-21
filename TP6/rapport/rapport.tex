@@ -155,7 +155,7 @@
 	\begin{split}
 	\forall 0\leq p\leq 2N-1,\ \hat{u_2}[p]&=\hat{u}[p] + \hat{c}[p] (\hat{\beta^n_d}(\frac{2\pi p}{N}) - 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))  \\
 	&=\hat{u}[p] + \frac{\hat{u}[p]}{\hat{\beta^n_d}(\frac{2\pi p}{N})}  (\hat{\beta^n_d}(\frac{2\pi p}{N}) - 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))  \\
-	&= \hat{u}[p] (2- 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi))
+	&= \hat{u}[p] (2- 2 \hat{\beta^n_{\frac{d}{2}}}(\frac{2\pi p}{N} + 2\pi)/\hat{\beta^n_d}(\frac{2\pi p}{N}))
 	\end{split}
 	\end{equation*}
 	
@@ -163,6 +163,72 @@
 	Then
 	
 	\begin{equation*}
-	\hat{\beta^n_{\frac{d}{2}}}(\xi) = \sum_{b\in\mathbb{Z}}  \hat{\beta^n}(\xi+4\pi b+2\pi) = \sum_{b\in\mathbb{Z}}  (\frac{\sin (\xi/2 +2\pi b +\pi)}{\xi/2 +2\pi b +\pi})^{n+1}= \sum_{b\in\mathbb{Z}}  (\frac{-\sin (\xi/2)}{\xi/2 +2\pi b +\pi})^{n+1}
+	\hat{\beta^n_{\frac{d}{2}}}(\xi) = \sum_{b\in\mathbb{Z}}  \hat{\beta^n}(\xi+4\pi b) = \sum_{b\in\mathbb{Z}}  (\frac{\sin (\xi/2 +2\pi b)}{\xi/2 +2\pi b})^{n+1}= \sum_{b\in\mathbb{Z}}  (\frac{\sin (\xi/2)}{\xi/2 +2\pi b})^{n+1}
 	\end{equation*}
+	
+	Figure \ref{fig:beta} shows the coeff on $\hat{u}$. Different from zero padding of Shannon interpolation, cubic spline copies $\hat{u}$ then suppress it by this function.
+	
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.6]{beta.eps}
+		\caption{Suppression of high frequency}
+		\label{fig:beta}
+	\end{figure}
+
+	\section*{Ex 18}
+	\subsection*{1}
+	It's direct, because $\phi$ is zero for all non-zero integer.
+	\subsection*{2}
+	\begin{equation*}
+	\widehat{\mathbb{1}_{[-p,p]}}(\xi) = \int_{-p}^p e^{i\xi x} dx = \frac{1}{-i\xi} (e^{-ip\xi}-e^{ip\xi}) = 2p sinc(\frac{p\xi}{\pi})
+	\end{equation*}
+	
+	\begin{equation*}
+	\begin{split}
+	\hat{\phi}(\xi) &= \mathscr{F}(sinc \cdot \mathbb{1}_{[-p,p]}) =\widehat{sinc}\star \mathscr{F}(\mathbb{1}_{[-p,p]})\\
+	&= \mathbb{1}_{[-\pi,\pi]} \star (2p\ sinc(\frac{p\xi}{\pi}))\\
+	\end{split}
+	\end{equation*}
+	\subsection*{3}
+	In interral $[n,n+1],\ n\in \mathbb{N}$, $\sin(\pi x)$ has sign $(-1)^n$, and $\pi x$ is always positive, so $sinc(x)$ has sign $(-1)^n$. So its integral on this interval has the same sign.
+	\subsection*{4}
+	$\hat{\phi}(0) = \int \phi = 2 \sum_{k = 0}^{p-1} \int_k^{k+1} sinc = 2 \sum_{k = 0}^{p-1} (-1)^k|\int_k^{k+1} sinc|$
+	
+	Note $a_k = |\int_k^{k+1} sinc|$. Then $\hat{\phi}(0) = \sum_{k=0}^{p-1} (-1)^k a_k$
+	
+	From Fourier transform of $sinc$, we know that $\int sinc = 1 = \sum_{k\geq0} (-1)^k a_k$.  We note $S_p = \hat{\phi}(0) = \sum_{k=0}^{p-1} (-1)^k a_k$, $S_0=0$.
+	
+	Notice that $a_k$ is strictly decreasing w.r.t $k$. So $S_{2p},\ p\geq 0$ is strictly increasing. 
+	With same argument, we can show $S_{2p+1}$ is strictly decreasing.
+	
+	And we know $S_{p} \rightarrow 1$ when $p\rightarrow \infty$, so $\forall p, S_{p} \neq 1$.
+	\subsection*{5}
+	\begin{equation*}
+	\begin{split}
+	f_\delta(x) &= \sum_{k\in\mathbb{Z}} f(k\delta)\phi(x-k)\\
+	\forall \xi\in\mathbb{R},\ \hat{f_\delta}(\xi) &= \int \sum_{k\in\mathbb{Z}} f(k\delta)\phi(x-k) e^{-i\xi x} dx\\
+	&=  \sum_{k\in\mathbb{Z}} f(k\delta) e^{-i\xi k} \int \phi(x-k) e^{-i\xi (x-k)}  dx\\
+	&=  \hat{\phi}(\xi) \sum_{k\in\mathbb{Z}} f(k\delta) e^{-i\xi k} \\
+	\end{split}
+	\end{equation*}
+	Note $\forall k\in\mathbb{Z},\ u[k] = f(k\delta)$. $u$ is $\delta$ discretization of $f$, so $\hat{u}$ is $2\pi \delta^{-1}$ periodic of $\hat{f}$
+	\begin{equation*}
+	\begin{split}
+	\hat{f_\delta}(\xi)
+	&=  \hat{\phi}(\xi) \hat{u}(\xi) = \hat{\phi}(\xi) \sum_{k\in\mathbb{Z}} \hat{f}(\xi + 2k\pi\delta^{-1})\\
+	\end{split}
+	\end{equation*}
+	
+	Set $\xi=0$, we proved the formula.
+	
+	\subsection*{6}
+	Let's calculate $\widehat{f_\delta - f}(0)$.
+	
+	$\widehat{f_\delta - f}(0) = \hat{f_\delta}(0)-\hat{f}(0) = \hat{\phi}(0) \sum_{k\in\mathbb{Z}} \hat{f}(2k\pi\delta^{-1}) -\hat{f}(0)$
+	
+	$=(\hat{\phi}(0)-1) \hat{f}(0) + \hat{\phi}(0) \sum_{k\in\mathbb{Z}, k\neq 0} \hat{f}(2k\pi\delta^{-1})$
+	
+	Because $f$ is in Schwartz space, so $\hat{f}$ is also in it. With the property of rapidly decreasing, when $\delta \rightarrow 0$, the term $\sum_{k\in\mathbb{Z}, k\neq 0} \hat{f}(2k\pi\delta^{-1})$ vanishes.
+	
+	So $\lim_{\delta \rightarrow 0} \widehat{f_\delta - f}(0) \neq 0$. $\lim_{\delta \rightarrow 0} \int |f_\delta-f| > \lim_{\delta \rightarrow 0} |\int f_\delta-f| > 0$
 \end{document}

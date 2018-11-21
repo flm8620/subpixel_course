@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsbsy}
+\usepackage{mathrsfs}
+\usepackage{appendix}
+\usepackage{amsthm}
+\usepackage{bbold}
+\usepackage{epstopdf}
+\usepackage{stmaryrd}
+
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\bb}[1]{\mathbf{#1}}
+\newcommand{\pd}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\newcommand{\parti}[1]{\pd{}{#1}}
+\newcommand{\bigCI}{\mathrel{\text{\scalebox{1.07}{$\perp\mkern-10mu\perp$}}}}
+\title{TP4 for Sub-pixel}
+\author{Leman FENG\\ Email: flm8620@gmail.com\\Website: lemanfeng.com}
+
+\begin{document}
+	\maketitle
+	\section{Ex 11}
+	see code in main.mlx
+	
+	\section{Ex 12}
+	\subsection{Ex 12.1}
+	$$
+	\widehat{u-per(u)} = \frac{\hat{v}}{\hat{k}}
+	$$
+	where $k$ is a convolutional kernel and $v$ only depend on boundary values of $u$. So $u-per(u)$ only depend on restriction of $u$ on $\partial \Omega$
+	\subsection{Ex 12.2}
+	$s=u-per(u)$ and we have:
+	$$
+	v(z) = (k*s)(z)
+	$$
+	where $v(z)=0$ for $z\in \mathring{\Omega}$. And convolution with $k$ is the discret Laplacien operator: $k*s = \Delta s$. So $\Delta (u-per(u))(z) = v(z) = 0$ for $z\in \mathring{\Omega}$.
+	\subsection{Ex 12.3}
+	$per(u)=u-s=u-(Q_1+Q_2)^{-1}Q_1u = [(Q_1+Q_2)^{-1}(Q_1+Q_2) - (Q_1+Q_2)^{-1}Q_1]u$
+	$=(Q_1+Q_2)^{-1}Q_2u$
+	
+	$(Q_1+Q_2)^{-1}Q_2$ is invertible as we see in course. So $per$ is a injection from $\mathbb{R}^\Omega$ to $\mathbb{R}^\Omega$. 
+	
+	$per$ is also a linear map, and $\mathbb{R}^\Omega$ has finite dimension. That means $dim(Ker(per)) = 0$. According to Rank–nullity theorem, $dim(Im(per))=dim(\mathbb{R}^\Omega)$. So $per$ is bijective.
+	\subsection{Ex 12.4}
+	Say $\lambda, u\neq0$ is a pair of eigenvalue and eigenvector. Assume they are complex.
+	$$
+	per(u)=\lambda u \Leftrightarrow (Q_1+Q_2)^{-1}Q_2u = \lambda u
+	\Leftrightarrow Q_2 u = \lambda (Q_1+Q_2) u
+	$$
+	Multiply at left by conjugate transpose $u^*$ of $u$
+	$$
+	\lambda (u^*Q_1u +u^*Q_2u) = u^*Q_2u
+	$$
+	and $Q_1$ is positive semi-definite, $Q_2$ positive definite. So
+	$$
+	\lambda = \frac{u^*Q_2u}{u^*Q_1u +u^*Q_2u} \in ]0,1]
+	$$
+	\subsection{Ex 12.5}
+	Let $u$ be the fix point of $per$. So $per(u)=u$, $s=u-per(u)=0$. Which means $(Q_1+Q_2)^{-1}Q_1u=0$. While $(Q_1+Q_2)^{-1}$ is invertible, so we must have $Q_1u=0$. Multiply at left by $u^T$:
+	$$
+	u^T Q_1 u = 0
+	$$
+	By definition, $u^T Q_1 u$ means sum of squared difference around across periodic boundary. So $u^T Q_1 u=0$ iff boundary pixels equal to their external periodic neighbours, which means $u\in\mathbf{P}$
+	
+	\subsection{Ex 12.6}
+	Use the indication, $\exists P$ invertible, $\exists D$ diagonal such that $P^T Q_1 P = D$ and $P^T Q_2 P = I$. Then
+	$$
+	per(u) = (Q_1+Q_2)^{-1}Q_2u = (P^{-T}DP^{-1}+P^{-T}IP^{-1})^{-1} P^{-T} I P^{-1} u
+	$$
+	$$
+	= P (D+I)^{-1} P^T P^{-T} I P^{-1} u = P (D+I)^{-1} P^{-1} u
+	$$
+	where $(D+I)^{-1}$ is obviously diagonal. So we just diagonalized the matrix applied to $u$, so $per$ is diagonalizable.
+	\subsection{Ex 12.7}
+	Use the result of Ex 12.6. $per$ is diagonalizable. Ex 12.4 tells us that all eigenvalues are real and $\in ]0,1]$. We decompose one image $\mathbf{u}$ into basis of $per$.
+	$$
+	\mathbf{u} = u_1 \mathbf{e}_1 +u_2 \mathbf{e}_2+\dots+u_m \mathbf{e}_m
+	$$
+	
+	Apply $per$ n times:
+	$$
+	per^n(\mathbf{u}) = \lambda_1^n u_1 \mathbf{e}_1 + \lambda_2^n u_2 \mathbf{e}_2+\dots+ \lambda_m^n u_m \mathbf{e}_m
+	$$
+	All $\lambda_i$ strictly smaller than one will vanish when $n \rightarrow \infty$. For $i s.t. \lambda_i = 1$, $\mathbf{e}_i$ must be a fix point of $per$. Ex 12.5 tells us fix point of $per$ is in $\mathbf{P}$. So $per^\infty(\mathbf{u})$ is composed of elements in $\mathbf{P}$, and $\mathbf{P}$ is a subspace, so $per^\infty(\mathbf{u}) \in \mathbf{P} $
+\end{document}
